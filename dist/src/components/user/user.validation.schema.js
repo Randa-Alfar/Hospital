@@ -23,8 +23,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.querySchema = void 0;
-const JOI = __importStar(require("joi"));
-exports.querySchema = JOI.object({
+exports.paramsSchema = void 0;
+const JOI = __importStar(require("@hapi/joi"));
+require("joi-extract-type");
+const express_joi_validation_1 = require("express-joi-validation");
+exports.paramsSchema = JOI.object({
     key: JOI.string().uuid().required()
 });
