@@ -16,6 +16,45 @@ class UserController {
                 res.status(400).send(`[User-manegement] Controller : cann't get users ${err}`);
             }
         };
+        this.createUser = async (req, res) => {
+            const user = req.body;
+            try {
+                const key = await this.userService.createUser(user);
+                res.status(201).send(key);
+            }
+            catch (err) {
+                res.status(400).send(`[User-magement] Controller : cann't create user ${err}`);
+            }
+        };
+        this.updateUser = async (req, res) => {
+            const user = req.body;
+            try {
+                await this.userService.updateUser(user);
+                res.status(200).send();
+            }
+            catch (err) {
+                res.status(400).send(`[User-magement] Controller : cann't update user ${err}`);
+            }
+        };
+        this.getUserByKey = async (req, res) => {
+            try {
+                const key = req.params;
+                const user = await this.userService.getUserByKey(key);
+                res.status(200).send(user);
+            }
+            catch (err) {
+                res.status(400).send(`[User-magement] Controller : cann't find user ${err}`);
+            }
+        };
+        this.deleteUser = async (req, res) => {
+            try {
+                const key = req.params;
+                await this.userService.deleteUser(key);
+                res.status(200).send();
+            }
+            catch (err) {
+            }
+        };
     }
 }
 exports.default = new UserController();
