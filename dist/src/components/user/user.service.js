@@ -29,7 +29,6 @@ class UserService {
         }
     }
     async createUser(user) {
-        console.log(user);
         try {
             const key = (0, uuid_1.v4)();
             let userkey = await this.querybuilder('user').insert(Object.assign(Object.assign({}, user), { user_key: key }));

@@ -1,30 +1,28 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.querySchema = void 0;
-const JOI = __importStar(require("joi"));
-exports.querySchema = JOI.object({
-    key: JOI.string().uuid().required()
-});
+// export const validation = (schema:JOI.ObjectSchema) => (payload:any) =>
+//     schema.validate(payload, {abortEarly: false});
+// const validator = validation(UserSchema);
+// export const userValidation = (req:Request, res: Response, next:NextFunction) => {
+//     const { body, params, query, headers, ...rest } = req;
+//     const userReq: IRequest = { body, params, query, headers };
+//     const { error } = validation(UserSchema)(userReq);
+//     if(error){
+//         throw `[user validation] there is an error in your schema ${error.message}`;
+//     }else{
+//         next();
+//     }
+// }
+// class anyclass {
+//     constructor(private schema: JOI.ObjectSchema) {}
+//     userValidation = (req:Request, res: Response, next:NextFunction)=>{
+//     const { body, params, query, headers, ...rest } = req;
+//     const userReq: IRequest = { body, params, query, headers };
+//     const { error } = validation(this.schema)(userReq);
+//     if(error){
+//         throw `[user validation] there is an error in your schema ${error.message}`;
+//     }else{
+//         next();
+//     }
+//     }
+// }
+// export default anyclass;
