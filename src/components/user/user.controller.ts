@@ -15,7 +15,6 @@ import UserService from "./user.service";
         };
 
         createUser = async (req: Request, res: Response): Promise<any> => {
-            
             const user:IUser = req.body;
             try{
                 const key = await this.userService.createUser(user);

@@ -18,7 +18,7 @@ class UserService {
     }
 
     async createUser(user:IUser):Promise<number[]>{
-        console.log(user);
+
         try{
            const key = uuidv4();
            let userkey = await this.querybuilder('user').insert({
