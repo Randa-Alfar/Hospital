@@ -30,7 +30,7 @@ export enum EOperation {
     delete ='delete' ,
 }
 
-enum resource {
+export enum resource {
     role = 'role',
     user = 'user',
     permission = 'permission',

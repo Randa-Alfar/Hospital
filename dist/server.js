@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const user_route_1 = __importDefault(require("./src/components/user/user.route"));
 const database_1 = __importDefault(require("./configDB/database"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const privilege_route_1 = __importDefault(require("./src/components/privileges/privilege.route"));
 dotenv_1.default.config();
 const port = process.env.PORT;
 class App {
@@ -36,6 +37,7 @@ class App {
     async routes() {
         this.CorsConfig();
         this.app.use("/user-management", user_route_1.default);
+        this.app.use("/privilege-management", privilege_route_1.default);
     }
 }
 const app = new App().app;

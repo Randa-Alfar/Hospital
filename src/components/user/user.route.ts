@@ -1,7 +1,7 @@
 import UserController from './user.controller';
 import BaseRoutes from "../../baseRoute/router";
 import { userParamsSchema, userCreateSchema, userUpdateSchema } from './user.shema';
-import { validation } from '../validation';
+import { validation } from '../../validation/validation';
 
 class UserRouter extends BaseRoutes {
     public routes(): void {
