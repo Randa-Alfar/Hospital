@@ -4,6 +4,7 @@ import UserRouter from "./src/components/user/user.route";
 import Database from './configDB/database';
 import bodyParser from 'body-parser';
 import cors from 'cors'
+import PrivilegeRoute from './src/components/privileges/privilege.route';
 
 dotenv.config();
 const port = process.env.PORT;
@@ -43,6 +44,7 @@ class App {
     this.CorsConfig();
 
     this.app.use("/user-management",UserRouter);
+    this.app.use("/privilege-management",PrivilegeRoute);
 
   }
 }

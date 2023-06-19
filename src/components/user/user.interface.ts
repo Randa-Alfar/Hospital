@@ -2,7 +2,8 @@ export interface IUser {
     name: string,
     age: number,
     email: string,
-    DOB: Date
+    DOB: Date,
+    password: string
 }
 export interface IUserSelect  {
     user_key?: string,
