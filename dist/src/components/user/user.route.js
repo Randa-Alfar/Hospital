@@ -11,6 +11,7 @@ class UserRouter extends router_1.default {
     routes() {
         this.router.get('/user', user_controller_1.default.getUser);
         this.router.post('/signup', (0, validation_1.validation)(user_shema_1.userCreateSchema), user_controller_1.default.createUser);
+        this.router.post('/login', (0, validation_1.validation)(user_shema_1.userLogIn), user_controller_1.default.login);
         this.router.put('/user', (0, validation_1.validation)(user_shema_1.userUpdateSchema), user_controller_1.default.updateUser);
         this.router.get('/user/:key', (0, validation_1.validation)(user_shema_1.userParamsSchema), user_controller_1.default.getUserByKey);
         this.router.delete('/user/:key', (0, validation_1.validation)(user_shema_1.userParamsSchema), user_controller_1.default.deleteUser);

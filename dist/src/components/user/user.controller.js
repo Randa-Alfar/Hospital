@@ -19,8 +19,14 @@ class UserController {
         this.createUser = async (req, res) => {
             const user = req.body;
             try {
-                const key = await this.userService.createUser(user);
-                res.status(201).send(key);
+                const userExist = await this.userService.getUserByEmail(user.email);
+                if (!userExist.user.length) {
+                    const key = await this.userService.createUser(user);
+                    res.status(201).send(key);
+                }
+                else {
+                    res.status(409).send(`[User-magement] Controller : cann't create user, user already exist`);
+                }
             }
             catch (err) {
                 res.status(400).send(`[User-magement] Controller : cann't create user ${err}`);
@@ -49,10 +55,33 @@ class UserController {
         this.deleteUser = async (req, res) => {
             try {
                 const key = req.params;
-                await this.userService.deleteUser(key);
-                res.status(200).send();
+                const userExist = await this.userService.getUserByKey(key);
+                if (!userExist.length) {
+                    await this.userService.deleteUser(key);
+                    res.status(200).send();
+                }
+                else {
+                    res.status(409).send(`[User-magement] Controller : cann't delete user, user doesn't exist`);
+                }
             }
             catch (err) {
+                res.status(400).send(`[User-magement] Controller : cann't delete user ${err}`);
+            }
+        };
+        this.login = async (req, res) => {
+            const user = req.body;
+            try {
+                const userExist = await this.userService.getUserByEmail(user.email);
+                if (userExist.user.length) {
+                    const token = await this.userService.logIn(user);
+                    res.status(201).send(token);
+                }
+                else {
+                    res.status(409).send(`[User-magement] Controller : cann't find user, user doesn't exist`);
+                }
+            }
+            catch (err) {
+                res.status(400).send(`[User-magement] Controller : cann't login ${err}`);
             }
         };
     }

@@ -13,6 +13,10 @@ export interface IUserSelect  {
     DOB?: Date
 }
 
+export interface IFindUser {
+    user: IUserSelect[]
+}
+
 export interface IuserUpdate {
     key:number,
     name?: string,
@@ -21,10 +25,15 @@ export interface IuserUpdate {
     DOB?: Date
 }
 
+export interface IUserLogIn {
+    email: string,
+    password: string,
+}
+
 export enum EUserSelect {
     name = 'name',
     age = 'age',
     user_key = 'user_key',
     DOB = 'DOB',
-    email = 'email'
+    email = 'email',
 }
