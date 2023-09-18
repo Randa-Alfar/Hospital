@@ -12,7 +12,7 @@ const privilege_route_1 = __importDefault(require("./src/components/privileges/p
 const morgan_1 = __importDefault(require("morgan"));
 const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-const openapi_json_1 = __importDefault(require("./openapi.json"));
+const swagger_1 = __importDefault(require("./src/utils/swagger"));
 dotenv_1.default.config();
 const port = process.env.PORT;
 class App {
@@ -46,13 +46,7 @@ class App {
         this.app.use("/privilege-management", privilege_route_1.default);
     }
     async swagger() {
-        const swaggerDefinition = openapi_json_1.default;
-        const options = {
-            swaggerDefinition,
-            // Paths to files containing OpenAPI definitions
-            apis: [`./src/components/**/**.openapi.yml`],
-        };
-        const swaggerSpec = (0, swagger_jsdoc_1.default)(options);
+        const swaggerSpec = (0, swagger_jsdoc_1.default)(swagger_1.default);
         this.app.use('/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerSpec));
     }
 }

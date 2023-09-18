@@ -50,7 +50,13 @@ class UserService {
     async updateUser(user) {
         try {
             const { key } = user, restUser = __rest(user, ["key"]);
-            await this.querybuilder('user').update(Object.assign({}, restUser)).where('user_key', key);
+            let userExist = await this.querybuilder('user').select('*').where('user_key', key);
+            if (!userExist.length) {
+                return "[user-management] Service : user doesn't exist";
+            }
+            else {
+                await this.querybuilder('user').update(Object.assign({}, restUser)).where('user_key', key);
+            }
         }
         catch (err) {
             throw `[User-manegement] Service : cann't update user ${err}`;

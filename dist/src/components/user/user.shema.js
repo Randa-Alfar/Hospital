@@ -12,7 +12,7 @@ exports.userUpdateSchema = {
         age: joi_1.default.number().min(7).max(100),
         DOB: joi_1.default.date(),
         email: joi_1.default.string().email(),
-    }).length(5),
+    }),
 };
 exports.userCreateSchema = {
     body: joi_1.default.object().keys({
