@@ -5,6 +5,11 @@ import Database from './configDB/database';
 import bodyParser from 'body-parser';
 import cors from 'cors'
 import PrivilegeRoute from './src/components/privileges/privilege.route';
+import morgan from "morgan";
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUI from 'swagger-ui-express'
+import fs from 'fs'
+import openapi from './openapi.json'
 
 dotenv.config();
 const port = process.env.PORT;
@@ -17,6 +22,7 @@ class App {
     this.routes();
     this.databaseSync();
     this.CorsConfig();
+    this.swagger();
   }
 
   protected databaseSync(): void {
@@ -28,7 +34,7 @@ class App {
 
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({extended: false}));
-
+    this.app.use(morgan("dev"));
     // this.app.use(cors());
 
     this.app.use(function (req, res, next) {
@@ -46,6 +52,20 @@ class App {
     this.app.use("/user-management",UserRouter);
     this.app.use("/privilege-management",PrivilegeRoute);
 
+  }
+
+  protected async swagger(): Promise<void> {
+    const swaggerDefinition = openapi;
+    
+    const options = {
+      swaggerDefinition,
+      // Paths to files containing OpenAPI definitions
+      apis: [`./src/components/**/**.openapi.yml`],
+    };
+    
+    const swaggerSpec = swaggerJSDoc(options);
+
+    this.app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
   }
 }
 const app = new App().app;

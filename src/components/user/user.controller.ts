@@ -1,9 +1,12 @@
 import { IUser, IUserLogIn, IUserSelect, IuserUpdate } from './user.interface';
 import { Request, Response } from "express";
 import UserService from "./user.service";
+import Context from '../context/auth.middleware';
 
     class UserController {
-        constructor(private readonly userService:UserService = new UserService()){}
+        constructor(private readonly userService:UserService = new UserService(),
+                    private readonly context:Context = new Context()
+                   ){}
 
         getUser = async (req: Request, res: Response): Promise<any> =>{
             try{
@@ -66,12 +69,17 @@ import UserService from "./user.service";
         }
         
         login = async (req: Request, res: Response): Promise<void> => {
-            const user:IUserLogIn = req.body;
+            const userInfo:IUserLogIn = req.body;
+            
             try{
-                const userExist = await this.userService.getUserByEmail(user.email);
+                const userExist = await this.userService.getUserByEmail(userInfo.email);
                 if(userExist.user.length){
-                    const token = await this.userService.logIn(user);
-                    res.status(201).send(token)
+                    const user = await this.userService.logIn(userInfo);
+                    if(user.hasAccess){
+                        const token = await this.context.login(user.payload);
+                        res.status(201).send(token)
+                    }
+                    
                 }else{
                     res.status(409).send(`[User-magement] Controller : cann't find user, user doesn't exist`);
                 }

@@ -35,3 +35,8 @@ export enum resource {
     user = 'user',
     permission = 'permission',
 }
+
+export enum role {
+    admin = 'admin',
+    user = 'user',
+}

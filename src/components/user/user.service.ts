@@ -7,6 +7,7 @@ import dotenv from 'dotenv'
 dotenv.config();
 class UserService {
  
+    private mysql:Knex<any>;
     constructor(protected querybuilder:Knex<any> = knex(globalConfig)){}
 
     async getUsers(){
@@ -78,10 +79,31 @@ class UserService {
         }
     }
 
-    async logIn(user:IUserLogIn): Promise<{ hasAccess: boolean}>{
-        const userPassword = await this.querybuilder('user').select('password').where('email',user.email);
-        const hasAccess = await bycrypt.compare(user.password,userPassword[0].password);
-        return {hasAccess: hasAccess};
+    async logIn(user:IUserLogIn): Promise<{ hasAccess: boolean, payload: any}>{
+        const userSelect = ['user.id','user.name','user.email','user.password','user_key'];
+
+        const query = await this.querybuilder('user')
+                                .select(...userSelect
+                                ,this.querybuilder.raw('json_arrayagg(role.name) as role')
+                                ,this.querybuilder.raw('json_arrayagg(permission.name) as permission')).where('email',user.email)
+                                .leftJoin('user_has_role as uhr','user.id','uhr.user_id')
+                                .leftJoin('role','uhr.role_name','role.name')
+                                .leftJoin('role_has_permission as rhp','role.name','rhp.role_name')
+                                .leftJoin('permission','rhp.permission_name','permission.name')
+                                .groupBy('user.id');
+
+        const hasAccess = await bycrypt.compare(user.password,query[0].password);
+
+        return {
+            hasAccess: hasAccess,
+            payload: {
+                name: query[0].name,
+                email: query[0].email,
+                key: query[0].user_key,
+                role: [...new Set(JSON.parse(query[0].role))],
+                permission: JSON.parse(query[0].permission),
+            }
+        };
     }
 
     async hashPassword(password:string):Promise<string>{

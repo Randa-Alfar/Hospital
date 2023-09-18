@@ -4,9 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_service_1 = __importDefault(require("./user.service"));
+const auth_middleware_1 = __importDefault(require("../context/auth.middleware"));
 class UserController {
-    constructor(userService = new user_service_1.default()) {
+    constructor(userService = new user_service_1.default(), context = new auth_middleware_1.default()) {
         this.userService = userService;
+        this.context = context;
         this.getUser = async (req, res) => {
             try {
                 const users = await this.userService.getUsers();
@@ -69,12 +71,15 @@ class UserController {
             }
         };
         this.login = async (req, res) => {
-            const user = req.body;
+            const userInfo = req.body;
             try {
-                const userExist = await this.userService.getUserByEmail(user.email);
+                const userExist = await this.userService.getUserByEmail(userInfo.email);
                 if (userExist.user.length) {
-                    const token = await this.userService.logIn(user);
-                    res.status(201).send(token);
+                    const user = await this.userService.logIn(userInfo);
+                    if (user.hasAccess) {
+                        const token = await this.context.login(user.payload);
+                        res.status(201).send(token);
+                    }
                 }
                 else {
                     res.status(409).send(`[User-magement] Controller : cann't find user, user doesn't exist`);
