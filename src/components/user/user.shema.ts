@@ -8,7 +8,7 @@ export const userUpdateSchema:ISchema = {
         age: JOI.number().min(7).max(100),
         DOB: JOI.date(),
         email: JOI.string().email(),
-    }),
+    }).length(5),
 };
 
 export const userCreateSchema:ISchema = {
@@ -17,14 +17,21 @@ export const userCreateSchema:ISchema = {
         age: JOI.number().min(7).max(100).required(),
         DOB: JOI.date(),
         email: JOI.string().email().required(),
-        password: JOI.string().required(),
-    })
+        password: JOI.string().min(3).alphanum().required(),
+    }).length(5)
 };
 
 export const userParamsSchema:ISchema = {
     params:JOI.object().keys({
         key: JOI.string().uuid().required()
-    }),
+    }).length(1),
+};
+
+export const userLogIn:ISchema = {
+    body: JOI.object().keys({
+        email: JOI.string().email().required(),
+        password: JOI.string().min(3).alphanum().required()
+    }).length(2),
 };
 
 
