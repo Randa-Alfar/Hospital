@@ -8,8 +8,8 @@ import PrivilegeRoute from './src/components/privileges/privilege.route';
 import morgan from "morgan";
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUI from 'swagger-ui-express'
-import fs from 'fs'
-import openapi from './openapi.json'
+import swaggerOptions from './src/utils/swagger';
+
 
 dotenv.config();
 const port = process.env.PORT;
@@ -55,16 +55,7 @@ class App {
   }
 
   protected async swagger(): Promise<void> {
-    const swaggerDefinition = openapi;
-    
-    const options = {
-      swaggerDefinition,
-      // Paths to files containing OpenAPI definitions
-      apis: [`./src/components/**/**.openapi.yml`],
-    };
-    
-    const swaggerSpec = swaggerJSDoc(options);
-
+    const swaggerSpec = swaggerJSDoc(swaggerOptions);
     this.app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
   }
 }

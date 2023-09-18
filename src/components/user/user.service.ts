@@ -37,12 +37,17 @@ class UserService {
         }
     }
 
-    async updateUser(user:IuserUpdate): Promise<void>{
+    async updateUser(user:IuserUpdate): Promise<void | string>{
         try{
             const {key , ...restUser} = user;
-            await this.querybuilder('user').update({
-                ...restUser
-            }).where('user_key',key);
+            let userExist = await this.querybuilder('user').select('*').where('user_key',key);
+            if (!userExist.length){
+                return "[user-management] Service : user doesn't exist";
+            } else {
+                await this.querybuilder('user').update({
+                    ...restUser
+                }).where('user_key',key);
+            }
         }catch(err){
             throw `[User-manegement] Service : cann't update user ${err}`;
         }

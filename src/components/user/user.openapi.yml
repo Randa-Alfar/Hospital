@@ -1,8 +1,14 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 paths:
   /user-management/user:
     get:
       tags:
-        - user-managment
+        - user-management
       description: Get all users
       summary: Get all users
       responses:
@@ -35,14 +41,43 @@ paths:
                           format: email
                         password: 
                           type: string
+    put:
+      tags:
+        - user-management
+      description: update user
+      summary: update user
+      requestBody:
+        description: enter the data that you want to update in the user
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - key
+              properties:
+                key:
+                  type: integer
+                name:
+                  type: string
+                age:
+                  type: integer
+                email:
+                  type: string
+                  format: email
+                DOB:
+                  type: string
+                  format: date
+      responses:
+        200:
+          description: user updated successfully!!!
   /user-management/signup:
     post:
       tags:
-        - user-managment
+        - user-management
       description: create a new user
       summary: create a new user
       responses:
-        200:
+        201:
           description: user was created successfully!!!
           content:
             application/json:
@@ -73,9 +108,67 @@ paths:
                   type: string
                   format: password
         required: true
-
-
-
-
-          
+  /user-management/login:
+    post:
+      tags:
+        - user-management
+      description: log to the account
+      summary: log to the account
+      requestBody:
+        description: enter the email and password to login
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password: 
+                  type: string
+                  format: password
+        required: true
+      responses:
+        201:
+          description: log in to the account successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+  /user/{key}:
+    get:
+      tags:
+        - user-management
+      description: find user by key
+      summary: find user by key
+      parameters:
+        - name: key
+          in: param
+          description: enter user key to get
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: we got user successfull!!!
+    delete:
+      tags:
+        - user-management
+      description: delete user by user key
+      summary: delete user by user key
+      parameters:
+        - name: key
+          in: param
+          description: enter user key to get
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: user deleted successfully!!!
 

@@ -8,7 +8,7 @@ export const userUpdateSchema:ISchema = {
         age: JOI.number().min(7).max(100),
         DOB: JOI.date(),
         email: JOI.string().email(),
-    }).length(5),
+    }),
 };
 
 export const userCreateSchema:ISchema = {

@@ -36,8 +36,13 @@ import Context from '../context/auth.middleware';
         updateUser = async (req: Request, res: Response): Promise<void> => {
             const user:IuserUpdate = req.body;
             try{
-                await this.userService.updateUser(user);
-                res.status(200).send();
+                let mes = await this.userService.updateUser(user);
+                if(mes){
+                    res.status(409).send(`[User-magement] Controller : cann't update user, user doesn't exist`);
+                } else {
+                    res.status(200).send();
+                }
+                
             }catch(err){
                 res.status(400).send(`[User-magement] Controller : cann't update user ${err}`);
             }

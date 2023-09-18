@@ -1,0 +1,101 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /assign/permission:
+    post:
+      tags:
+        - /privilege-management
+      description: assign permission
+      requestBody: 
+        descrition:  assign permission
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - resource
+                - operation
+              properties:
+                resource:
+                  type: string
+                operation:
+                  type: string
+                  enum: 
+                    - create
+                    - read
+                    - update
+                    - delete
+      responses: 
+        201:
+          description: permissin created!!!
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  permission:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        resource:
+                          type: string
+                        operation:
+                          type: string
+  /assign/permission_to_role:
+    post:
+      tags:
+        - /privilege-management
+      description: assign permission to role
+      requestBody: 
+        descrition: assign permission to role
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - role_name
+                - permission_name
+              properties:
+                role_name:
+                  type: string
+                permission_name:
+                  type: string
+                  format: array
+      responses:
+        201:
+          description: assign permission to role
+  /assign/role_to_user:
+    post: 
+      tags:
+        - /privilege-management
+      description: assign role to user
+      requestBody:
+        descrition: assign role to user
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+               - role_name    
+               - user_id
+              properties:        
+                role_name:
+                  type: string
+                user_id:
+                  type: string
+                  format: uuid
+      responses:
+        201:
+          description: assigned role to user successfully!!!
+
+
+                        
+
+              
+
+  
