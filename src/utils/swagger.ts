@@ -27,7 +27,7 @@ const swaggerOptions: swaggerJSDoc.Operation = {
               description: "user apis"
             },
             {
-                name: "/privilege-management",
+                name: "privilege-management",
                 description: "privilege apis"
               }
            ]

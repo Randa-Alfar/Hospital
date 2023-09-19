@@ -10,7 +10,9 @@ const privilege_controller_1 = __importDefault(require("./privilege.controller")
 const privilege_schema_1 = require("./privilege.schema");
 class PrivilegeRoute extends router_1.default {
     routes() {
-        this.router.post('/assign/permission', (0, auth_middleware_1.checkAccess)('permission#create'), (0, validation_1.validation)(privilege_schema_1.privilegeSchema), privilege_controller_1.default.assignPermission);
+        this.router.post('/assign/permission', 
+        // checkAccess('permission#create'),
+        (0, validation_1.validation)(privilege_schema_1.privilegeSchema), privilege_controller_1.default.assignPermission);
         this.router.post('/assign/permission_to_role', (0, auth_middleware_1.checkAccess)('permission#create'), (0, validation_1.validation)(privilege_schema_1.assignPermissionRoleSchema), privilege_controller_1.default.assignPermissionToRole);
         this.router.post('/assign/role_to_user', (0, auth_middleware_1.checkAccess)('permission#create'), (0, validation_1.validation)(privilege_schema_1.assignRoleToUseSchema), privilege_controller_1.default.assignRoleToUser);
     }
