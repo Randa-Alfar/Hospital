@@ -8,7 +8,7 @@ paths:
   /assign/permission:
     post:
       tags:
-        - /privilege-management
+        - privilege-management
       description: assign permission
       requestBody: 
         descrition:  assign permission
@@ -31,7 +31,7 @@ paths:
                     - delete
       responses: 
         201:
-          description: permissin created!!!
+          description: permission created!!!
           content: 
             application/json:
               schema:
@@ -42,14 +42,12 @@ paths:
                     items:
                       type: object
                       properties:
-                        resource:
-                          type: string
-                        operation:
+                        name:
                           type: string
   /assign/permission_to_role:
     post:
       tags:
-        - /privilege-management
+        - privilege-management
       description: assign permission to role
       requestBody: 
         descrition: assign permission to role
@@ -68,11 +66,11 @@ paths:
                   format: array
       responses:
         201:
-          description: assign permission to role
+          description: assign permission to role successfully!!!
   /assign/role_to_user:
     post: 
       tags:
-        - /privilege-management
+        - privilege-management
       description: assign role to user
       requestBody:
         descrition: assign role to user

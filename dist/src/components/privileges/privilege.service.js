@@ -19,9 +19,11 @@ class PrivilegeService {
                 .crossJoin('operation', function () { })
                 .andWhere('resource.type', resource)
                 .whereIn('operation.type', [...selectOperation]);
-            const permissions = await this.createPermission(query);
+            const allpermissions = await this.createPermission(query);
             const permissionsExist = await this.querybuilder('permission').select('*').where('p_resource', resource);
-            if (!permissionsExist.length) {
+            const permissions = allpermissions.filter((permission) => !permissionsExist.find(({ name }) => permission.name == name));
+            console.log(permissions);
+            if (permissions.length) {
                 await this.querybuilder('permission').insert(permissions);
                 return await this.querybuilder('permission').select('name').where('p_resource', resource);
             }

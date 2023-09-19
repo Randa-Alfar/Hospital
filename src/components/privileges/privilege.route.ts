@@ -7,7 +7,7 @@ import { assignPermissionRoleSchema, assignRoleToUseSchema, privilegeSchema } fr
 class PrivilegeRoute extends BaseRoutes {
     public routes(): void {
         this.router.post('/assign/permission',
-                        checkAccess('permission#create'),
+                        // checkAccess('permission#create'),
                         validation(privilegeSchema),
                         privilegeController.assignPermission);
 
