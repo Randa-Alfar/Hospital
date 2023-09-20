@@ -62,8 +62,9 @@ paths:
                 role_name:
                   type: string
                 permission_name:
-                  type: string
-                  format: array
+                  type: array
+                  items:
+                    type: string
       responses:
         201:
           description: assign permission to role successfully!!!
@@ -85,13 +86,79 @@ paths:
                 role_name:
                   type: string
                 user_id:
-                  type: string
-                  format: uuid
+                  type: array
+                  items:
+                    type: string
       responses:
         201:
           description: assigned role to user successfully!!!
-
-
+  /unassign/role_from_user:
+      delete: 
+        tags:
+          - privilege-management
+        description: unassign role from user
+        requestBody:
+          descrition: unassign role from user
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - role   
+                - userId
+                properties:        
+                  role:
+                    type: string
+                  userId:
+                    type: string
+        responses:
+          200:
+            description: unassign role from user successfully!!!
+  /unassign/permission_from_role:
+      delete: 
+        tags:
+          - privilege-management
+        description: unassign permission from role
+        requestBody:
+          descrition: unassign permission from role
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - role   
+                - permission
+                properties:        
+                  role:
+                    type: string
+                  permission:
+                    type: array
+                    items:
+                      type: string
+        responses:
+          200:
+            description: unassign permission from role successfully!!!
+  /permission:
+      delete: 
+        tags:
+          - privilege-management
+        description: delete permission
+        requestBody:
+          descrition: delete permission
+          content:
+            application/json:
+              schema:
+                type: object
+                required:  
+                - permission
+                properties:        
+                  permission:
+                    type: array
+                    items:
+                      type: string
+        responses:
+          200:
+            description: delete permission successfully!!!
                         
 
               

@@ -22,6 +22,17 @@ export interface IAssignRoleToUser {
     role_name: string,
     user_id:number,
 }
+export interface IUnassignRole {
+    userId: number,
+    role: string
+}
+
+export interface IUnassignPermission {
+    role: string,
+    permission: string[]
+}
+
+export type TPermission = Pick<IUnassignPermission,'permission'>
 
 export enum EOperation {
     create = 'create',

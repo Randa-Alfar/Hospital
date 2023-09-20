@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.assignRoleToUseSchema = exports.assignPermissionRoleSchema = exports.privilegeSchema = void 0;
+exports.permissionSchema = exports.unassignPermissionSchema = exports.unassignRoleFromUserSchema = exports.assignRoleToUseSchema = exports.assignPermissionRoleSchema = exports.privilegeSchema = void 0;
 const joi_1 = __importDefault(require("@hapi/joi"));
 const privilege_interface_1 = require("./privilege.interface");
 exports.privilegeSchema = {
@@ -23,4 +23,21 @@ exports.assignRoleToUseSchema = {
         role_name: joi_1.default.string().min(3).max(50).required(),
         user_id: joi_1.default.number().min(1).integer(),
     }).length(2),
+};
+exports.unassignRoleFromUserSchema = {
+    body: joi_1.default.object().keys({
+        userId: joi_1.default.number().min(1).required(),
+        role: joi_1.default.string().min(3).required()
+    }).length(2)
+};
+exports.unassignPermissionSchema = {
+    body: joi_1.default.object().keys({
+        role: joi_1.default.string().min(3).required(),
+        Permission: joi_1.default.array().items(joi_1.default.string().min(6)).required()
+    })
+};
+exports.permissionSchema = {
+    body: joi_1.default.object().keys({
+        Permission: joi_1.default.array().items(joi_1.default.string().min(6)).required()
+    })
 };

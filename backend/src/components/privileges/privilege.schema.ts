@@ -1,6 +1,7 @@
+import { ISchema } from './../../validation/validation.interface';
 import JOI from '@hapi/joi'
 import { EOperation, resource } from './privilege.interface';
-import { ISchema } from '../../validation/validation.interface';
+
 
 export const privilegeSchema:ISchema = {
     body: JOI.object().keys({
@@ -23,3 +24,23 @@ export const assignRoleToUseSchema:ISchema = {
     }).length(2),
 };
 
+
+export const unassignRoleFromUserSchema: ISchema = {
+    body: JOI.object().keys({
+        userId: JOI.number().min(1).required(),
+        role: JOI.string().min(3).required()
+    }).length(2)
+}
+
+export const unassignPermissionSchema: ISchema = {
+    body: JOI.object().keys({
+        role: JOI.string().min(3).required(),
+        Permission: JOI.array().items(JOI.string().min(6)).required()
+    })
+}
+
+export const permissionSchema: ISchema = {
+    body: JOI.object().keys({
+        Permission: JOI.array().items(JOI.string().min(6)).required()
+    })
+}
