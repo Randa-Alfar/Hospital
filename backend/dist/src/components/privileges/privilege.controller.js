@@ -37,6 +37,36 @@ class PrivilegeController {
                 res.status(400).send(`[privilege-management] Controller : cann't assign role to the user ${err}`);
             }
         };
+        this.unassignRoleFromUser = async (req, res) => {
+            const userRole = req.body;
+            try {
+                await this.privilegeService.unassignRoleFromUser(userRole);
+                res.status(200).send();
+            }
+            catch (err) {
+                res.status(400).send(`[privilege-management] Controller : cann't unassign role from the user ${err}`);
+            }
+        };
+        this.unassignPermissionFromRole = async (req, res) => {
+            const permissionsOfRole = req.body;
+            try {
+                await this.privilegeService.unassignPermissionFromRole(permissionsOfRole);
+                res.status(200).send();
+            }
+            catch (err) {
+                res.status(400).send(`[privilege-management] Controller : ${err}`);
+            }
+        };
+        this.deletePermission = async (req, res) => {
+            const permissions = req.body;
+            try {
+                await this.privilegeService.deletePermission(permissions);
+                res.status(200).send();
+            }
+            catch (err) {
+                res.status(400).send(`[privilege-management] Controller : ${err}`);
+            }
+        };
     }
 }
 exports.default = new PrivilegeController();

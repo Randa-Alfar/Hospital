@@ -1,6 +1,6 @@
 import knex, { Knex } from "knex";
 import { globalConfig } from "../../../knexfile";
-import { IPrivilege, EOperation, IPermission, IAssignPermissionRole, IPermissionRole, IAssignRoleToUser } from "./privilege.interface";
+import { IPrivilege, EOperation, IPermission, IAssignPermissionRole, IPermissionRole, IAssignRoleToUser, IUnassignRole, IUnassignPermission, TPermission } from "./privilege.interface";
 
 
 class PrivilegeService {
@@ -68,6 +68,53 @@ class PrivilegeService {
 
     }
 
+    async unassignRoleFromUser(userRole:IUnassignRole){
+        const isUserHasRole = await this.querybuilder('user_has_role').select("user_id")
+        .where('user_id',userRole.userId).andWhere('role_name',userRole.role);
+        console.log(isUserHasRole.length);
+        try{
+            if(isUserHasRole.length){
+                await this.querybuilder('user_has_role').del().where('user_id',userRole.userId).andWhere('role_name',userRole.role);
+            }else {
+                throw `[privilege-management] Service : this role is not assigned to this user`;
+            }
+        }catch(err){
+            throw `[privilege-management] Service : cann't unaaign role from user ${err}`
+        }
+    } 
+
+    async unassignPermissionFromRole(data:IUnassignPermission):Promise<void>{
+        const permissionOfRole: IUnassignPermission = data;
+        const isRoleHasPermission = await this.querybuilder('role_has_permission').select('*')
+        .whereIn('permission_name', [...permissionOfRole.permission]).andWhere('role_name',permissionOfRole.role);
+        try{
+            if(isRoleHasPermission.length){
+                await this.querybuilder('role_has_permission').del().whereIn('permission_name', [...permissionOfRole.permission])
+                .andWhere('role_name',permissionOfRole.role);
+            }else{
+                throw `[privilege-management] Service : cann't unassign permission from role, role doesn't have permission`
+            }
+        }catch(err){
+            throw `[privilege-management] Service : cann't unassign permission from role ${err}`
+        }
+    }
+
+    async deletePermission(permission:TPermission){
+        const permissions:TPermission = permission;
+        const isPermissionExist = await this.querybuilder('permission').select('*')
+        .whereIn('name',[...permissions.permission]);
+        try{
+            if(isPermissionExist.length){
+                await this.querybuilder('role_has_permission').del().whereIn('permission_name',[...permissions.permission]);
+                await this.querybuilder('permission').del().whereIn('name',[...permissions.permission]);
+            }else{
+                throw `[privilege-management] Service : cann't delete permission, permission doesn't exist.`
+            }
+        }catch(err){
+            throw `[privilege-management] Service : cann't delete permission, ${err}`
+        }
+        
+    }
 
     async permisstionForRole(permissionRoles:IAssignPermissionRole):Promise<IPermissionRole[]>{
         return permissionRoles.permission_name.map((permissionRole)=>{
